@@ -1,0 +1,33 @@
+# Ignore generated data files
+output/
+*.db
+*.db-journal
+*.csv
+*.csv.gz
+*.log
+
+# Ignore batch generation directories
+batch_*/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
