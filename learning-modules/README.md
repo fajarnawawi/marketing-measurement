@@ -47,8 +47,9 @@ Master marketing measurement methodologies
 
 ```
 learning-modules/
-├── README.md                          # This file
-├── notebooks/                         # Interactive Jupyter notebooks
+├── README.md                          # This file - Program overview
+│
+├── notebooks/                         # 🎓 Core Learning Track (12 weeks)
 │   ├── Week_01_Python_Foundations.ipynb
 │   ├── Week_02_Pandas_Data_Manipulation.ipynb
 │   ├── Week_03_SQL_Basics.ipynb
@@ -61,8 +62,53 @@ learning-modules/
 │   ├── Week_10_Marketing_Mix_Modeling.ipynb
 │   ├── Week_11_Incrementality_Lift.ipynb
 │   └── Week_12_CLV_Capstone.ipynb
-├── data/                              # Sample datasets (to be added)
-└── resources/                         # Additional resources (to be added)
+│
+├── notebooks-advanced/                # 🚀 Advanced Track (Redshift + Scale)
+│   ├── Week_01_Advanced_Python_at_Scale.ipynb
+│   ├── Week_02_Advanced_Pandas_Redshift.ipynb
+│   ├── Week_03_Advanced_SQL_Redshift.ipynb
+│   ├── Week_04_Advanced_SQL_Analytics.ipynb
+│   ├── Week_05_Advanced_EDA_at_Scale.ipynb
+│   ├── Week_06_Advanced_Visualization_Dashboards.ipynb
+│   ├── Week_07_Advanced_Statistics_BigData.ipynb
+│   ├── Week_08_Advanced_AB_Testing_Platform.ipynb
+│   ├── Week_09_Advanced_Attribution_at_Scale.ipynb
+│   ├── Week_10_Advanced_MMM_Production.ipynb
+│   ├── Week_11_Advanced_Incrementality_Platform.ipynb
+│   └── Week_12_Advanced_Enterprise_Measurement.ipynb
+│
+├── cheatsheets/                       # 📝 Quick Reference Guides
+│   ├── Week_01_Cheatsheet.md         # Python quick reference
+│   ├── Week_02_Cheatsheet.md         # Pandas quick reference
+│   ├── Week_03_Cheatsheet.md         # SQL basics quick reference
+│   ├── Week_04_Cheatsheet.md         # SQL advanced quick reference
+│   ├── Week_05_Cheatsheet.md         # EDA quick reference
+│   ├── Week_06_Cheatsheet.md         # Visualization quick reference
+│   ├── Week_07_Cheatsheet.md         # Statistics quick reference
+│   ├── Week_08_Cheatsheet.md         # A/B testing quick reference
+│   ├── Week_09_Cheatsheet.md         # Attribution quick reference
+│   ├── Week_10_Cheatsheet.md         # MMM quick reference
+│   ├── Week_11_Cheatsheet.md         # Incrementality quick reference
+│   └── Week_12_Cheatsheet.md         # CLV & comprehensive reference
+│
+├── data-generation/                   # 🔧 Synthetic Data Generation
+│   ├── generate_marketing_data.py    # Main data generator script
+│   ├── quick_generate.sh             # Quick generation commands
+│   ├── example_usage.py              # How to use generated data
+│   ├── requirements.txt              # Python dependencies
+│   ├── README_Data_Generation.md     # Full documentation
+│   ├── QUICKSTART.md                 # Quick start guide
+│   └── DATA_MODEL.txt                # Schema documentation
+│
+├── resources/                         # 📚 Additional Resources
+│   ├── Redshift_Setup_Guide.md       # AWS Redshift setup instructions
+│   ├── Kaggle_Datasets_Guide.md      # Public datasets for practice
+│   └── kaggle-datasets/              # Downloaded Kaggle datasets
+│
+└── data/                              # 💾 Generated Sample Data
+    ├── small/                         # 10K campaigns (~100MB)
+    ├── medium/                        # 100K campaigns (~1GB)
+    └── large/                         # 1M+ campaigns (~10GB+)
 ```
 
 ---
@@ -179,27 +225,242 @@ Throughout the 12 weeks, you'll complete hands-on projects including:
 
 ---
 
+## 🎯 Learning Tracks
+
+This academy offers **TWO learning tracks** to suit different experience levels and goals:
+
+### **📚 Core Track** (Recommended for Beginners)
+Start here if you're new to programming or data analysis.
+
+**Location:** `notebooks/`
+**Focus:** Building foundational skills with manageable datasets
+**Dataset Size:** 1K - 100K rows
+**Tools:** Python, Pandas, SQLite, local processing
+**Time:** ~1 hour/day × 12 weeks
+
+**Perfect for:**
+- Complete beginners to programming
+- Learning core concepts without infrastructure complexity
+- Local development on laptop/desktop
+- No cloud costs
+
+### **🚀 Advanced Track** (For Experienced Learners)
+Take this after Core Track, or if you already know Python/SQL basics.
+
+**Location:** `notebooks-advanced/`
+**Focus:** Production-scale analytics with enterprise tools
+**Dataset Size:** 1M - 100M+ rows
+**Tools:** Python, Pandas, Amazon Redshift, Dask, distributed computing
+**Time:** ~2-3 hours/day × 12 weeks
+
+**Perfect for:**
+- Learners who completed Core Track
+- Professionals with Python/SQL experience
+- Those preparing for enterprise roles
+- Learning cloud-based analytics
+
+**Additional Topics:**
+- AWS Redshift setup and optimization
+- Memory-efficient data processing
+- Distributed computing with Dask
+- Production deployment patterns
+- Query optimization at scale
+- Cost management strategies
+- Real-time dashboards
+- Enterprise architecture
+
+**Prerequisites for Advanced Track:**
+- Completion of Core Track OR
+- 6+ months Python/SQL experience
+- AWS account (free tier available)
+- Comfort with command line
+
+---
+
+## 📝 Cheatsheets
+
+Every week includes a comprehensive **quick reference cheatsheet** for fast lookup during your work.
+
+**Location:** `cheatsheets/`
+
+Each cheatsheet contains:
+- ✅ **Syntax Quick Reference** - Common operations and patterns
+- ✅ **Code Examples** - Copy-paste ready snippets
+- ✅ **Marketing Use Cases** - Real scenarios with solutions
+- ✅ **Common Patterns** - Reusable templates
+- ✅ **Best Practices** - Tips and gotchas
+- ✅ **Practice Exercises** - With complete solutions
+
+**How to Use:**
+1. **During Learning:** Review after completing each week
+2. **During Work:** Quick reference for syntax and patterns
+3. **During Interviews:** Study guide for technical questions
+
+**Example Topics:**
+- Week 1: Python fundamentals, data types, functions
+- Week 2: Pandas operations, filtering, groupby
+- Week 3-4: SQL queries, joins, window functions
+- Week 5-7: EDA, visualization, statistical tests
+- Week 8-12: A/B testing, attribution, MMM, incrementality, CLV
+
+---
+
+## 🔧 Data Generation Tools
+
+Generate realistic marketing datasets at any scale for practice and testing.
+
+**Location:** `data-generation/`
+
+### **Quick Start:**
+```bash
+cd data-generation
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Generate test dataset (1K campaigns, ~30 seconds)
+./quick_generate.sh test
+
+# Generate medium dataset (100K campaigns, ~15-30 minutes)
+./quick_generate.sh medium
+
+# Analyze generated data
+python3 example_usage.py
+```
+
+### **Generated Tables:**
+1. **campaigns** - Campaign metadata (channel, type, budget)
+2. **daily_performance** - Daily metrics (impressions, clicks, conversions, spend, revenue)
+3. **customers** - Customer demographics and segments
+4. **conversions** - Transaction-level data
+5. **touchpoints** - Multi-touch attribution data
+6. **cohorts** - Cohort retention analysis
+
+### **Dataset Sizes:**
+- **Tiny:** 1K campaigns (~10MB, 30 sec)
+- **Small:** 10K campaigns (~100MB, 2-5 min)
+- **Medium:** 100K campaigns (~1GB, 15-30 min)
+- **Large:** 1M campaigns (~10GB, 2-4 hours)
+- **XLarge:** 10M campaigns (~100GB, 10-20 hours)
+
+### **Features:**
+- Realistic CTR, CVR, CPA, ROAS distributions
+- 13 marketing channels with unique characteristics
+- Seasonality and trend patterns
+- Customer journey simulation
+- Export to CSV, SQLite, Redshift-compatible format
+
+**Use Cases:**
+- Practice SQL queries on realistic data
+- Test data pipelines and ETL processes
+- Learn Redshift with large datasets
+- Build dashboards and visualizations
+- Experiment with attribution models
+
+See `data-generation/README_Data_Generation.md` for full documentation.
+
+---
+
+## 📚 Additional Resources
+
+### **🗄️ Amazon Redshift Setup Guide**
+**Location:** `resources/Redshift_Setup_Guide.md`
+
+Complete guide for setting up AWS Redshift for the advanced track:
+- AWS account creation and configuration
+- Redshift cluster setup (step-by-step)
+- Security and cost management
+- Python integration (psycopg2, SQLAlchemy)
+- Query optimization techniques
+- Alternative: Redshift Serverless
+- Troubleshooting common issues
+
+**Estimated Costs:**
+- Free tier: $0 (2-month trial with limited hours)
+- Development: ~$25-50/month (pause when not in use)
+- Production simulation: ~$100-200/month
+
+### **📊 Kaggle Datasets Guide**
+**Location:** `resources/Kaggle_Datasets_Guide.md`
+
+Curated list of **15 high-quality marketing datasets** for practice:
+- E-commerce transaction data
+- Digital advertising campaigns
+- Customer churn datasets
+- Web analytics data
+- Multi-touch attribution data
+- Email marketing performance
+- Social media metrics
+
+**Features:**
+- Direct download links and commands
+- Integration with course weeks
+- 10 complete project ideas
+- Data exploration templates
+- Best practices for using external data
+
+**Quick Start:**
+```bash
+# Install Kaggle CLI
+pip install kaggle
+
+# Setup credentials (see guide)
+# Download dataset
+kaggle datasets download -d olistbr/brazilian-ecommerce
+
+# Use with course exercises
+python3 -c "import pandas as pd; df = pd.read_csv('data.csv'); print(df.head())"
+```
+
+---
+
 ## 🛠️ Technologies & Tools
 
 You'll gain hands-on experience with industry-standard tools:
 
-### **Programming**
+### **Core Track Tools**
+
+**Programming:**
 - **Python** - The primary language for data analysis
 - **SQL** - Essential for querying marketing databases
 
-### **Data Manipulation**
+**Data Manipulation:**
 - **Pandas** - Data transformation and analysis
 - **NumPy** - Numerical computing
 - **SQLite** - Relational database practice
 
-### **Visualization**
+**Visualization:**
 - **Matplotlib** - Foundational plotting
 - **Seaborn** - Statistical visualizations
 
-### **Statistics & ML**
+**Statistics & ML:**
 - **SciPy** - Statistical tests and distributions
 - **Statsmodels** - Regression and time series
 - **Scikit-learn** - Machine learning foundations
+
+### **Advanced Track Additional Tools**
+
+**Cloud & Databases:**
+- **Amazon Redshift** - Enterprise data warehouse
+- **PostgreSQL** - Production-grade relational database
+- **AWS S3** - Cloud data storage
+
+**Distributed Computing:**
+- **Dask** - Parallel computing for out-of-memory datasets
+- **Multiprocessing** - Python parallel processing
+- **SQLAlchemy** - Database ORM and connection pooling
+
+**Advanced Analytics:**
+- **PyMC3** - Bayesian statistical modeling
+- **Prophet** - Time series forecasting
+- **LightGBM/XGBoost** - Gradient boosting for ML
+- **NetworkX** - Graph analytics for attribution
+
+**Production Tools:**
+- **Plotly Dash** - Interactive dashboards
+- **Logging** - Production error handling
+- **Optuna** - Hyperparameter optimization
+- **psycopg2** - PostgreSQL/Redshift connector
 
 ---
 
@@ -442,7 +703,27 @@ df.plot(x='date', y='conversions', kind='line')
 
 ---
 
-**Version:** 1.0
+## 📦 What's Included
+
+**Complete Package Contents:**
+- ✅ **24 Interactive Notebooks** (12 Core + 12 Advanced)
+- ✅ **12 Comprehensive Cheatsheets** (Quick reference guides)
+- ✅ **Production Data Generator** (Generate 1K-100M+ row datasets)
+- ✅ **AWS Redshift Setup Guide** (Enterprise database guide)
+- ✅ **Kaggle Datasets Guide** (15 curated marketing datasets)
+- ✅ **50+ Practice Exercises** (With complete solutions)
+- ✅ **24 Capstone Projects** (Real-world applications)
+- ✅ **1000+ Code Examples** (Copy-paste ready)
+
+**Total Value:**
+- 200+ hours of content
+- Enterprise-ready skills
+- Portfolio-quality projects
+- Industry-standard tools
+
+---
+
+**Version:** 2.0 (Advanced Track Edition)
 **Last Updated:** 2025-11-16
 **Created by:** Marketing Measurement Partner Academy
 

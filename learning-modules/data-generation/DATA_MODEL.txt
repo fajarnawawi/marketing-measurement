@@ -1,0 +1,277 @@
+================================================================================
+                    MARKETING MEASUREMENT DATA MODEL
+================================================================================
+
+TABLE RELATIONSHIPS
+===================
+
+                          ┌─────────────────┐
+                          │   campaigns     │ ← Campaign Metadata
+                          │─────────────────│
+                          │ campaign_id (PK)│
+                          │ campaign_name   │
+                          │ channel         │
+                          │ campaign_type   │
+                          │ start_date      │
+                          │ end_date        │
+                          │ daily_budget    │
+                          │ total_budget    │
+                          └────────┬────────┘
+                                   │
+                    ┌──────────────┼──────────────┐
+                    │              │              │
+                    ▼              ▼              ▼
+         ┌──────────────────┐ ┌─────────────┐ ┌─────────────┐
+         │daily_performance │ │ conversions │ │ touchpoints │
+         │──────────────────│ │─────────────│ │─────────────│
+         │ campaign_id (FK) │ │conversion_id│ │touchpoint_id│
+         │ date             │ │campaign_id  │ │customer_id  │
+         │ impressions      │ │customer_id  │ │campaign_id  │
+         │ clicks           │ │conv_date    │ │touch_date   │
+         │ conversions      │ │order_value  │ │position     │
+         │ spend            │ │quantity     │ │is_first     │
+         │ revenue          │ │product_cat  │ │is_last      │
+         │ ctr, cvr, cpc    │ │is_new_cust  │ │device_type  │
+         │ cpa, roas        │ │payment_meth │ │interaction  │
+         └──────────────────┘ └──────┬──────┘ └──────┬──────┘
+                                     │               │
+                                     │               │
+                                     ▼               ▼
+                              ┌─────────────────────┐
+                              │     customers       │ ← Customer Profiles
+                              │─────────────────────│
+                              │ customer_id (PK)    │
+                              │ acquisition_date    │
+                              │ country             │
+                              │ device_type         │
+                              │ segment             │
+                              │ age                 │
+                              │ gender              │
+                              │ ltv                 │
+                              │ num_purchases       │
+                              │ avg_order_value     │
+                              │ is_active           │
+                              └──────────┬──────────┘
+                                         │
+                                         ▼
+                              ┌─────────────────────┐
+                              │      cohorts        │ ← Retention Analysis
+                              │─────────────────────│
+                              │ cohort_week         │
+                              │ week_number         │
+                              │ cohort_size         │
+                              │ retained_customers  │
+                              │ retention_rate      │
+                              │ revenue             │
+                              │ avg_rev_per_cust    │
+                              └─────────────────────┘
+
+================================================================================
+
+DATA VOLUMES (for 100K campaigns, default multipliers)
+========================================================
+
+Table                Rows            Multiplier      Description
+--------------------------------------------------------------------------------
+campaigns            100,000         1.0             Base table
+daily_performance    3,000,000       ~30             Campaigns × avg_duration
+customers            5,000,000       50.0            Campaigns × multiplier
+conversions          10,000,000      100.0           Campaigns × multiplier
+touchpoints          20,000,000      200.0           Campaigns × multiplier
+cohorts              ~2,600,000      varies          Cohort_count × 52 weeks
+
+TOTAL ROWS:          ~40,600,000
+
+================================================================================
+
+METRICS HIERARCHY
+=================
+
+Campaign Level (campaigns):
+  ├─ Configuration: budget, dates, status
+  └─ Classification: channel, type
+
+Daily Performance (daily_performance):
+  ├─ Volume Metrics: impressions, clicks, conversions
+  ├─ Financial: spend, revenue
+  └─ Derived Rates: CTR, CVR, CPC, CPA, ROAS
+
+Customer Level (customers):
+  ├─ Demographics: age, gender, country
+  ├─ Behavior: segment, device_type
+  └─ Value: LTV, avg_order_value, num_purchases
+
+Transaction Level (conversions):
+  ├─ Order Details: value, quantity, category
+  ├─ Attribution: campaign, customer
+  └─ Context: date, time, payment_method
+
+Journey Level (touchpoints):
+  ├─ Path Analysis: position, first/last touch
+  ├─ Timing: date, time, time_to_next
+  └─ Interaction: device, interaction_type
+
+Cohort Level (cohorts):
+  ├─ Retention: retention_rate, retained_customers
+  └─ Revenue: total_revenue, avg_per_customer
+
+================================================================================
+
+CHANNEL CHARACTERISTICS
+========================
+
+Paid Channels:
+  ├─ Google Ads:    High CPC ($2.50), Mid CTR (3.5%), Good CVR (5.0%)
+  ├─ Facebook Ads:  Mid CPC ($1.80), Mid CTR (2.5%), Mid CVR (4.0%)
+  ├─ Instagram Ads: Mid CPC ($1.90), Mid CTR (2.8%), Mid CVR (3.8%)
+  ├─ LinkedIn Ads:  High CPC ($5.50), Low CTR (2.2%), High CVR (6.0%)
+  ├─ Twitter Ads:   Low CPC ($1.50), Low CTR (2.0%), Low CVR (3.0%)
+  ├─ TikTok Ads:    Low CPC ($1.20), High CTR (3.2%), Mid CVR (3.5%)
+  ├─ Display:       Low CPC ($0.80), Very Low CTR (0.8%), Low CVR (2.0%)
+  ├─ Email:         Very Low CPC ($0.10), Low CTR (1.5%), High CVR (8.0%)
+  └─ Affiliate:     Low CPC ($1.00), Low CTR (1.2%), Mid CVR (4.5%)
+
+Organic Channels:
+  ├─ Organic Search: Free, High CTR (4.0%), High CVR (5.5%)
+  ├─ Organic Social: Free, Low CTR (1.8%), Low CVR (3.0%)
+  ├─ Direct:         Free, Very High CTR (5.0%), High CVR (7.0%)
+  └─ Referral:       Free, Mid CTR (3.0%), Good CVR (5.0%)
+
+================================================================================
+
+SEASONALITY PATTERNS
+====================
+
+Day of Week:
+  ├─ Monday-Friday:  100% baseline
+  └─ Saturday-Sunday: 70% of weekday traffic
+
+Monthly Pattern:
+  ├─ Q1 (Jan-Mar):   85-95% of baseline
+  ├─ Q2 (Apr-Jun):   95-105% of baseline
+  ├─ Q3 (Jul-Sep):   85-100% of baseline (summer dip)
+  └─ Q4 (Oct-Dec):   110-140% of baseline (holiday boost)
+
+Special Events:
+  └─ End of Month:   115% boost (last 3 days)
+
+================================================================================
+
+DATA QUALITY FEATURES
+=====================
+
+Realistic Distributions:
+  ✓ Spend:           Log-normal (mean=7, sigma=1.5)
+  ✓ Campaign Duration: Gamma (shape=2, scale=15)
+  ✓ LTV:             Log-normal (mean=5, sigma=1.2)
+  ✓ Order Value:     Log-normal (mean=4, sigma=0.8)
+
+Correlations:
+  ✓ Spend → Impressions (via CPC)
+  ✓ Impressions → Clicks (via CTR)
+  ✓ Clicks → Conversions (via CVR)
+  ✓ Conversions → Revenue (via AOV)
+
+Realistic Variability:
+  ✓ Noise: 10-20% random variation
+  ✓ Outliers: Natural occurrence via long-tail distributions
+  ✓ Missing Data: Minimal (campaigns end before date range end)
+
+Customer Journey:
+  ✓ Touchpoints: 1-8 per customer (decreasing probability)
+  ✓ Time Between Touches: Poisson(3) days
+  ✓ Multi-device: Desktop (40%), Mobile (50%), Tablet (10%)
+
+Cohort Behavior:
+  ✓ Retention Decay: Exponential with rate 0.05
+  ✓ Natural Variation: ±2% noise around decay curve
+  ✓ LTV Accumulation: Retained customers generate revenue
+
+================================================================================
+
+USE CASES BY TABLE
+==================
+
+campaigns:
+  ✓ Campaign planning and budgeting
+  ✓ Channel mix analysis
+  ✓ Campaign type performance comparison
+
+daily_performance:
+  ✓ Time series analysis
+  ✓ Trend identification
+  ✓ Anomaly detection
+  ✓ Performance optimization
+  ✓ Budget pacing
+
+customers:
+  ✓ Customer segmentation
+  ✓ LTV prediction
+  ✓ Demographic analysis
+  ✓ Geographic distribution
+
+conversions:
+  ✓ Sales analysis
+  ✓ Product performance
+  ✓ Payment method trends
+  ✓ New vs returning customer analysis
+
+touchpoints:
+  ✓ Multi-touch attribution
+  ✓ Customer journey mapping
+  ✓ Path analysis
+  ✓ First/last touch comparison
+  ✓ Assisted conversion analysis
+
+cohorts:
+  ✓ Retention analysis
+  ✓ Cohort comparison
+  ✓ Lifetime value tracking
+  ✓ Customer health metrics
+
+================================================================================
+
+QUERY EXAMPLES
+==============
+
+-- Top performing channels by ROAS
+SELECT 
+    c.channel,
+    SUM(dp.spend) as total_spend,
+    SUM(dp.revenue) as total_revenue,
+    SUM(dp.revenue) / SUM(dp.spend) as ROAS
+FROM daily_performance dp
+JOIN campaigns c USING (campaign_id)
+GROUP BY c.channel
+ORDER BY ROAS DESC;
+
+-- Customer LTV by segment
+SELECT 
+    segment,
+    COUNT(*) as customers,
+    AVG(ltv) as avg_ltv,
+    AVG(num_purchases) as avg_purchases
+FROM customers
+GROUP BY segment
+ORDER BY avg_ltv DESC;
+
+-- Multi-touch attribution
+SELECT 
+    c.channel,
+    COUNT(CASE WHEN t.is_first_touch THEN 1 END) as first_touch,
+    COUNT(CASE WHEN t.is_last_touch THEN 1 END) as last_touch,
+    COUNT(*) as total_touches
+FROM touchpoints t
+JOIN campaigns c USING (campaign_id)
+GROUP BY c.channel;
+
+-- Retention curve
+SELECT 
+    week_number,
+    AVG(retention_rate) as avg_retention,
+    SUM(revenue) as total_revenue
+FROM cohorts
+GROUP BY week_number
+ORDER BY week_number;
+
+================================================================================
